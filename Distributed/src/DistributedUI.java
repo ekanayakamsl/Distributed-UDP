@@ -23,7 +23,8 @@ public class DistributedUI extends javax.swing.JFrame {
      */
     Node node;
     ArrayList<String> fileList;
-
+    Timer timer;
+    
     public DistributedUI() {
         initComponents();
     }
@@ -293,6 +294,82 @@ public class DistributedUI extends javax.swing.JFrame {
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
 
+        this.intiate();
+        
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                DefaultTableModel neighbourDefaultTableModel = (DefaultTableModel) neighbours.getModel();
+                neighbourDefaultTableModel.getDataVector().removeAllElements();
+                System.out.println("-- thread -- ");
+                for( Neighbour neighbour : node.getNeighbourTable() ){
+                    int nport = neighbour.getPort();
+                    String nip = neighbour.getIp();
+                    Object[] objects = {nip,nport};
+                    neighbourDefaultTableModel.addRow(objects);
+                }
+            }
+        }, 2 * 1000,2 * 1000);
+        
+    }//GEN-LAST:event_registerActionPerformed
+
+    private void unregisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unregisterActionPerformed
+        node.leave();
+        node.unreg();
+        timer.cancel();
+        node.stopNode();
+        node = null;
+        System.gc();
+    }//GEN-LAST:event_unregisterActionPerformed
+
+    private void ipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ipActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ipActionPerformed
+
+    private void portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_portActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                
+                new DistributedUI().setVisible(true);
+                
+            }
+        });
+    }
+    
+    
+    public void intiate(){
         ArrayList<String> files = new ArrayList<String>();
         files.add("Adventures of Tintin");
         files.add("Jack and Jill");
@@ -333,70 +410,6 @@ public class DistributedUI extends javax.swing.JFrame {
         
 
         node = new Node(this.ip.getText(), Integer.parseInt(this.port.getText()), this.username.getText(), fileList, Integer.parseInt(this.bootport.getText()), this.bootip.getText());
-        
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                DefaultTableModel neighbourDefaultTableModel = (DefaultTableModel) neighbours.getModel();
-                neighbourDefaultTableModel.getDataVector().removeAllElements();
-                System.out.println("-- thread -- ");
-                for( Neighbour neighbour : node.getNeighbourTable() ){
-                    int nport = neighbour.getPort();
-                    String nip = neighbour.getIp();
-                    Object[] objects = {nip,nport};
-                    neighbourDefaultTableModel.addRow(objects);
-                }
-            }
-        }, 2 * 1000,2 * 1000);
-    }//GEN-LAST:event_registerActionPerformed
-
-    private void unregisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unregisterActionPerformed
-        node.leave();
-        node.unreg();
-    }//GEN-LAST:event_unregisterActionPerformed
-
-    private void ipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ipActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ipActionPerformed
-
-    private void portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_portActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DistributedUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new DistributedUI().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

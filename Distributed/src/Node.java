@@ -535,6 +535,10 @@ public class Node {
 	
 	public void stopNode() {
 		stop = true;
+                receiveSock.disconnect();
+                sendSock.disconnect();
 	}
+        
+        
 	
 }
