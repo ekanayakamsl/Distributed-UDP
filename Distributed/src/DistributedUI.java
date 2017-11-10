@@ -1,11 +1,12 @@
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
+import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
-import java.util.Timer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,6 +25,7 @@ public class DistributedUI extends javax.swing.JFrame {
     Node node;
     ArrayList<String> fileList;
     Timer timer;
+   
     
     public DistributedUI() {
         initComponents();
@@ -52,10 +54,15 @@ public class DistributedUI extends javax.swing.JFrame {
         username = new javax.swing.JTextField();
         unregister = new javax.swing.JButton();
         port = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         bootip = new javax.swing.JTextField();
         bootport = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,10 +108,7 @@ public class DistributedUI extends javax.swing.JFrame {
 
         result.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Host", "Files", "Hops"
@@ -117,10 +121,7 @@ public class DistributedUI extends javax.swing.JFrame {
 
         neighbours.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "IP", "Port"
@@ -159,27 +160,47 @@ public class DistributedUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("User name");
+
+        jLabel3.setText("Ip");
+
+        jLabel4.setText("Port");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(29, 29, 29)
-                .addComponent(ip, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ip, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addGap(27, 27, 27)
-                .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(register)
-                .addGap(18, 18, 18)
-                .addComponent(unregister)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(register)
+                        .addGap(18, 18, 18)
+                        .addComponent(unregister))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -189,22 +210,27 @@ public class DistributedUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        bootip.setText("localhost");
+        bootip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bootipActionPerformed(evt);
+            }
+        });
 
         bootport.setText("55555");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Files"
             }
         ));
         jScrollPane4.setViewportView(jTable1);
+
+        jLabel5.setText("Server IP:");
+
+        jLabel6.setText("ServerPort:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -229,7 +255,12 @@ public class DistributedUI extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bootip, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54)
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bootport, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -241,25 +272,33 @@ public class DistributedUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bootip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bootport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bootport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(query, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(search))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(55, 55, 55))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void queryFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_queryFocusGained
-        if (query.getText().equals("Type here..")) {
+        if (query.getText().equals("Search here..")) {
             query.setText("");
             query.setForeground(Color.BLACK);
         }
@@ -268,7 +307,7 @@ public class DistributedUI extends javax.swing.JFrame {
     private void queryFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_queryFocusLost
         if (query.getText().isEmpty()) {
             query.setForeground(new Color(204, 204, 204));
-            query.setText("Type here..");
+            query.setText("Search here..");
         }
     }//GEN-LAST:event_queryFocusLost
 
@@ -280,9 +319,8 @@ public class DistributedUI extends javax.swing.JFrame {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                DefaultTableModel resultDefaultTableModel = (DefaultTableModel) result.getModel();
-                resultDefaultTableModel.getDataVector().removeAllElements();
-                System.out.println("-- thread -- ");
+                DefaultTableModel resultDefaultTableModel = (DefaultTableModel) result.getModel();                
+                resultDefaultTableModel.getDataVector().removeAllElements();                
                 for( Object[] o : node.getResults() ){
                     resultDefaultTableModel.addRow(o);
                 }
@@ -302,7 +340,7 @@ public class DistributedUI extends javax.swing.JFrame {
             public void run() {
                 DefaultTableModel neighbourDefaultTableModel = (DefaultTableModel) neighbours.getModel();
                 neighbourDefaultTableModel.getDataVector().removeAllElements();
-                System.out.println("-- thread -- ");
+//                System.out.println("-- thread -- ");
                 for( Neighbour neighbour : node.getNeighbourTable() ){
                     int nport = neighbour.getPort();
                     String nip = neighbour.getIp();
@@ -310,15 +348,14 @@ public class DistributedUI extends javax.swing.JFrame {
                     neighbourDefaultTableModel.addRow(objects);
                 }
             }
-        }, 2 * 1000,2 * 1000);
-        
+        }, 2 * 1000,15 * 1000);
+                
     }//GEN-LAST:event_registerActionPerformed
 
     private void unregisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unregisterActionPerformed
+//        node.leave();
         node.leave();
-        node.unreg();
         timer.cancel();
-        node.stopNode();
         node = null;
         System.gc();
     }//GEN-LAST:event_unregisterActionPerformed
@@ -330,6 +367,10 @@ public class DistributedUI extends javax.swing.JFrame {
     private void portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_portActionPerformed
+
+    private void bootipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bootipActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bootipActionPerformed
 
     /**
      * @param args the command line arguments
@@ -364,59 +405,59 @@ public class DistributedUI extends javax.swing.JFrame {
                 
                 new DistributedUI().setVisible(true);
                 
+                
             }
         });
     }
     
     
     public void intiate(){
-        ArrayList<String> files = new ArrayList<String>();
-        files.add("Adventures of Tintin");
-        files.add("Jack and Jill");
-        files.add("Glee");
-        files.add("The Vampire Diarie");
-        files.add("King Arthur");
-        files.add("Windows XP");
-        files.add("Harry Potter");
-        files.add("Kung Fu Panda");
-        files.add("Lady Gaga");
-        files.add("Twilight");
-        files.add("Windows 8");
-        files.add("Mission Impossible");
-        files.add("Turn Up The Music");
-        files.add("Super Mario");
-        files.add("American Pickers");
-        files.add("Microsoft Office 2010");
-        files.add("Happy Feet");
-        files.add("Modern Family");
-        files.add("American Idol");
-        files.add("Hacking for Dummies");
-
-        //DefaultListModel defaultListModel =  (DefaultListModel) this.files.getModel();
-        DefaultTableModel fileModel = (DefaultTableModel) this.jTable1.getModel();
-        fileModel.getDataVector().removeAllElements();
-
-        fileList = new ArrayList<String>();
-        for (int i = 0; i < 3; i++) {
-            Random random = new Random();
-            int rand = random.nextInt(10);
-            //if(!fileList.contains(files.get(rand)))
-            String file = files.get(rand);
-            fileList.add(file);
-            Object[] objects = {file};
-            fileModel.addRow(objects);
-
-        }
         
+        
+        
+        
+            String myfiles[]= {"Adventures of Tintin","Jack and Jill","Glee","The Vampire Diarie","King Arthur","Windows XP","Harry Potter","Kung Fu Panda","Lady Gaga","Twilight","Windows 8","Mission Impossible","Turn Up The Music","Super Mario",
+				"American Pickers","Microsoft Office 2010","Happy Feet","Modern Family","American Idol","Hacking for Dummies"};
+            ArrayList<String> files = new ArrayList<String>();
+            Collections.addAll(files, myfiles);
 
+            Random rand = new Random();
+
+            int noOfFiles = rand.nextInt((5 - 3) + 1) + 3;
+            
+             fileList = new ArrayList<String>();
+             
+            //DefaultListModel defaultListModel =  (DefaultListModel) this.files.getModel();
+            DefaultTableModel fileModel = (DefaultTableModel) this.jTable1.getModel();
+            fileModel.getDataVector().removeAllElements();
+
+            while(fileList.size() < noOfFiles){
+                    int index = rand.nextInt(20);
+                    String file = files.get(index);
+                    if(!fileList.contains(file)){
+                            fileList.add(file);
+                            Object[] objects = {file};
+                            fileModel.addRow(objects);
+                    }
+            }
+  
         node = new Node(this.ip.getText(), Integer.parseInt(this.port.getText()), this.username.getText(), fileList, Integer.parseInt(this.bootport.getText()), this.bootip.getText());
     }
+    
+    
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bootip;
     private javax.swing.JTextField bootport;
     private javax.swing.JTextField ip;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
